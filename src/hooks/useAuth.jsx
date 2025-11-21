@@ -1,7 +1,8 @@
+'use client'
 import { AuthContext } from "@/context/AuthContext"
+import { useContext } from "react"
 
-const { useContext } = require("react")
 
 export const useAuth = () => {
-    return useContext(AuthContext)
+   return useContext(AuthContext)
 }
