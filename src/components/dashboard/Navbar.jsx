@@ -1,6 +1,16 @@
-'use client'
+import { useAuth } from "@/hooks/useAuth"
+import { useRouter } from "next/navigation"
+import toast from "react-hot-toast"
 
 export default function Header({ onMenuClick }) {
+  const {userLogout} = useAuth()
+  const router = useRouter()
+  const logout = () =>{
+    userLogout()
+    router.push('/login')
+    toast.success("User Logout Success!!")
+
+  }
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
       <div className="flex items-center justify-between h-16 px-4">
@@ -9,18 +19,22 @@ export default function Header({ onMenuClick }) {
           <button
             onClick={onMenuClick}
             className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 lg:hidden"
+            aria-label="Toggle menu"
           >
             ☰
           </button>
           <div className="ml-4 lg:ml-0">
-            <h2 className="text-xl font-semibold text-gray-800">Dashboard</h2>
+            <h1 className="text-xl font-semibold text-gray-800">Dashboard</h1>
           </div>
         </div>
 
         {/* Right side */}
         <div className="flex items-center space-x-4">
-          <button className="p-2 rounded-full text-gray-400 hover:text-gray-500 hover:bg-gray-100">
-            🔔
+          <button 
+            className="p-2 rounded-full text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+            aria-label="Notifications"
+          >
+            <span aria-hidden="true">🔔</span>
           </button>
           
           <div className="flex items-center space-x-3">
@@ -28,8 +42,9 @@ export default function Header({ onMenuClick }) {
               <span className="text-sm font-medium text-white">AD</span>
             </div>
             <div className="hidden md:block">
-              <p className="text-sm font-medium text-gray-700">Admin User</p>
-              <p className="text-xs text-gray-500">Administrator</p>
+              <button onClick={logout} className="py-2 px-3 bg-red-600 hover:bg-red-700 text-white rounded transition-colors cursor-pointer">
+                Logout
+              </button>
             </div>
           </div>
         </div>

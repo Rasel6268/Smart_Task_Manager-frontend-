@@ -1,6 +1,7 @@
 "use client";
 import { useAuth } from "@/hooks/useAuth";
 import api from "@/lib/api";
+import ProtectedRoute from "@/protectedRoute/ProtectedRoute";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -181,7 +182,8 @@ const TeamsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <ProtectedRoute>
+      <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
           <div>
@@ -379,11 +381,12 @@ const TeamsPage = () => {
                                   required
                                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                                 >
-                                  <option value="Team Lead">Team Lead</option>
-                                  <option value="Developer">Developer</option>
-                                  <option value="Designer">Designer</option>
-                                  <option value="Manager">Manager</option>
-                                  <option value="Member">Member</option>
+                                  <option value="Project Manager(PM)</">Project Manager(PM)</option>
+                                  <option value="Frontend Developer">Frontend Developer</option>
+                                  <option value="Backend Developer">Backend Developer</option>
+                                  <option value="Full-Stack Developer">Full-Stack Developer</option>
+                                  <option value="QA / Test Engineer">QA / Test Engineer</option>
+                                  <option value="UI/UX Designer">UI/UX Designer</option>
                                 </select>
                               </div>
                               
@@ -466,6 +469,7 @@ const TeamsPage = () => {
         )}
       </div>
     </div>
+    </ProtectedRoute>
   );
 };
 

@@ -175,6 +175,9 @@ const LoginPage = () => {
             </div>
           </form>
         </div>
+        {/* user creadiansial */}
+        <p>emal: bmrasel626825@gmail.com</p>
+        <p>password: Bmrasel626825@</p>
 
         {/* Features Preview */}
         <div className="mt-8 grid grid-cols-3 gap-4 text-center">

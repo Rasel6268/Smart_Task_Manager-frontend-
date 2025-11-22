@@ -3,6 +3,7 @@ import CapacityIndicator from "@/components/CapacityIndicator";
 import CapacityWarningModal from "@/components/CapacityWarningModal";
 import { useAuth} from "@/hooks/useAuth";
 import api from "@/lib/api";
+import ProtectedRoute from "@/protectedRoute/ProtectedRoute";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -458,7 +459,8 @@ const TasksPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <ProtectedRoute>
+      <div className="min-h-screen bg-gray-50 py-8">
       <div className="w-11/12 mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
@@ -1148,6 +1150,7 @@ const TasksPage = () => {
         )}
       </div>
     </div>
+    </ProtectedRoute>
   );
 };
 
