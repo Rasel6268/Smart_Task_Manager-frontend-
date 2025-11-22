@@ -1,6 +1,4 @@
-// app/register/page.jsx
 "use client";
-
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -20,13 +18,9 @@ const RegisterPage = () => {
   const { user, userRegister, googleLogin } = useAuth();
   const router = useRouter();
 
-
   useEffect(() => {
-    if (user) {
-      router.push('/dashboard');
-    }
+    if (user) router.push('/dashboard');
   }, [user, router]);
-
 
   useEffect(() => {
     const calculateStrength = () => {
@@ -38,11 +32,8 @@ const RegisterPage = () => {
       setPasswordStrength(strength);
     };
 
-    if (formData.password) {
-      calculateStrength();
-    } else {
-      setPasswordStrength(0);
-    }
+    if (formData.password) calculateStrength();
+    else setPasswordStrength(0);
   }, [formData.password]);
 
   const getPasswordStrengthColor = () => {
@@ -62,7 +53,6 @@ const RegisterPage = () => {
     setLoading(true);
     setError('');
 
- 
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       setLoading(false);
@@ -78,8 +68,8 @@ const RegisterPage = () => {
     try {
       await userRegister(formData.email, formData.password, formData.name);
       router.push('/dashboard');
-    } catch (error) {
-      setError(error.message || 'Failed to create account. Please try again.');
+    } catch (err) {
+      setError(err.message || 'Failed to create account. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -91,7 +81,7 @@ const RegisterPage = () => {
       setError('');
       await googleLogin();
       router.push('/dashboard');
-    } catch (error) {
+    } catch (err) {
       setError('Failed to sign in with Google. Please try again.');
     } finally {
       setLoading(false);
@@ -100,10 +90,7 @@ const RegisterPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   if (user) {
@@ -117,7 +104,7 @@ const RegisterPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 via-white to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
-        {/* Header Section */}
+        {/* Header */}
         <div className="text-center mb-8">
           <div className="mx-auto h-12 w-12 bg-linear-to-r from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
             <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -127,15 +114,11 @@ const RegisterPage = () => {
           <h1 className="mt-4 text-3xl font-bold bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
             Join Smart Task Manager
           </h1>
-          <h2 className="mt-2 text-lg text-gray-600">
-            Create your account
-          </h2>
-          <p className="mt-1 text-sm text-gray-500">
-            Start managing your team and projects efficiently
-          </p>
+          <h2 className="mt-2 text-lg text-gray-600">Create your account</h2>
+          <p className="mt-1 text-sm text-gray-500">Start managing your team and projects efficiently</p>
         </div>
 
-        {/* Register Card */}
+        {/*user Register section */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
           <form className="space-y-5" onSubmit={handleSubmit}>
             {error && (
@@ -147,79 +130,51 @@ const RegisterPage = () => {
               </div>
             )}
 
-            {/* Name Field */}
+           
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                Full Name
-              </label>
-              <div className="relative">
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400"
-                  placeholder="Enter your full name"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-              </div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400"
+                placeholder="Enter your full name"
+                value={formData.name}
+                onChange={handleChange}
+              />
             </div>
 
-            {/* Email Field */}
+         
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-              <div className="relative">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400"
-                  placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                  <svg className="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                  </svg>
-                </div>
-              </div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
+              />
             </div>
 
-            {/* Password Field */}
+           
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400"
-                  placeholder="Create a password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                  <svg className="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-              </div>
-              
-              {/* Password Strength Meter */}
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400"
+                placeholder="Create a password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+
+             
               {formData.password && (
                 <div className="mt-2">
                   <div className="flex justify-between text-xs text-gray-500 mb-1">
@@ -234,50 +189,47 @@ const RegisterPage = () => {
                       style={{ width: `${passwordStrength}%` }}
                     ></div>
                   </div>
+
+                 
+                  <div className="mt-2 text-sm space-y-1">
+                    <p className={`flex items-center ${/[A-Z]/.test(formData.password) ? 'text-green-500' : 'text-red-500'}`}>
+                      {/[A-Z]/.test(formData.password) ? '✔' : '✖'} At least one uppercase letter
+                    </p>
+                    <p className={`flex items-center ${/[a-z]/.test(formData.password) ? 'text-green-500' : 'text-red-500'}`}>
+                      {/[a-z]/.test(formData.password) ? '✔' : '✖'} At least one lowercase letter
+                    </p>
+                    <p className={`flex items-center ${/[0-9]/.test(formData.password) ? 'text-green-500' : 'text-red-500'}`}>
+                      {/[0-9]/.test(formData.password) ? '✔' : '✖'} At least one number
+                    </p>
+                    <p className={`flex items-center ${/[^A-Za-z0-9]/.test(formData.password) ? 'text-green-500' : 'text-red-500'}`}>
+                      {/[^A-Za-z0-9]/.test(formData.password) ? '✔' : '✖'} At least one special character
+                    </p>
+                  </div>
                 </div>
               )}
             </div>
 
-            {/* Confirm Password Field */}
+           
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  required
-                  className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400 ${
-                    formData.confirmPassword && formData.password !== formData.confirmPassword 
-                      ? 'border-red-300' 
-                      : 'border-gray-200'
-                  }`}
-                  placeholder="Confirm your password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                  {formData.confirmPassword && (
-                    formData.password === formData.confirmPassword ? (
-                      <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    ) : (
-                      <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                      </svg>
-                    )
-                  )}
-                </div>
-              </div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                required
+                className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400 ${
+                  formData.confirmPassword && formData.password !== formData.confirmPassword ? 'border-red-300' : 'border-gray-200'
+                }`}
+                placeholder="Confirm your password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
               {formData.confirmPassword && formData.password !== formData.confirmPassword && (
                 <p className="mt-1 text-xs text-red-500">Passwords do not match</p>
               )}
             </div>
 
-            {/* Submit Button */}
+            
             <button
               type="submit"
               disabled={loading}
@@ -298,7 +250,7 @@ const RegisterPage = () => {
               )}
             </button>
 
-            {/* Divider */}
+          
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200"></div>
@@ -308,7 +260,6 @@ const RegisterPage = () => {
               </div>
             </div>
 
-            {/* Google Sign In Button */}
             <button
               type="button"
               onClick={handleGoogleSignIn}
@@ -324,14 +275,11 @@ const RegisterPage = () => {
               <span>Sign up with Google</span>
             </button>
 
-            {/* Login Link */}
+         
             <div className="text-center pt-4 border-t border-gray-100">
               <p className="text-sm text-gray-600">
                 Already have an account?{' '}
-                <Link 
-                  href="/login" 
-                  className="text-blue-600 hover:text-blue-500 font-medium transition-colors group inline-flex items-center space-x-1"
-                >
+                <Link href="/login" className="text-blue-600 hover:text-blue-500 font-medium transition-colors group inline-flex items-center space-x-1">
                   <span>Sign in</span>
                   <svg className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -340,41 +288,6 @@ const RegisterPage = () => {
               </p>
             </div>
           </form>
-        </div>
-
-        {/* Features Preview */}
-        <div className="mt-8 grid grid-cols-3 gap-4 text-center">
-          <div className="text-gray-600">
-            <div className="w-8 h-8 mx-auto mb-2 bg-blue-100 rounded-lg flex items-center justify-center">
-              <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </div>
-            <p className="text-xs font-medium">Team Collaboration</p>
-          </div>
-          <div className="text-gray-600">
-            <div className="w-8 h-8 mx-auto mb-2 bg-indigo-100 rounded-lg flex items-center justify-center">
-              <svg className="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <p className="text-xs font-medium">Smart Automation</p>
-          </div>
-          <div className="text-gray-600">
-            <div className="w-8 h-8 mx-auto mb-2 bg-purple-100 rounded-lg flex items-center justify-center">
-              <svg className="w-4 h-4 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-            </div>
-            <p className="text-xs font-medium">Progress Analytics</p>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="mt-8 text-center">
-          <p className="text-xs text-gray-500">
-            © 2024 Smart Task Manager. Boost your team's productivity.
-          </p>
         </div>
       </div>
     </div>

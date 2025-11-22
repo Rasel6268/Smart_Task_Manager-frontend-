@@ -129,8 +129,8 @@ const TasksPage = () => {
 
   // Auto-assign mutation
   const autoAssignMutation = useMutation({
-    mutationFn: async (projectId) => {
-      const res = await api.post("/tasks/auto-assign", { projectId });
+    mutationFn: async ({projectId, email}) => {
+      const res = await api.post("/tasks/auto-assign", { projectId,email });
       return res.data;
     },
     onSuccess: (data) => {
@@ -300,10 +300,13 @@ const TasksPage = () => {
   };
 
   const handleCapacityWarningAutoAssign = () => {
-   
-    setShowCapacityWarning(false);
-    autoAssignMutation.mutate(pendingTaskData.projectId);
-  };
+  setShowCapacityWarning(false);
+  autoAssignMutation.mutate({
+    projectId: pendingTaskData.projectId,
+    email: user?.email
+  });
+};
+
 
   const handleCapacityWarningCancel = () => {
     
@@ -616,7 +619,7 @@ const TasksPage = () => {
                         </p>
                       )}
                     </div>
-                    <div className="flex space-x-2 ml-3 flex-shrink-0">
+                    <div className="flex space-x-2 ml-3 shrink-0">
                       <button
                         onClick={() =>
                           router.push(
