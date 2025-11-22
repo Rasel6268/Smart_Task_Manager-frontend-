@@ -147,7 +147,7 @@ const TasksPage = () => {
     },
   });
 
-  // Filter tasks based on current filters
+  
   const filteredTasks = tasks.filter((task) => {
     if (filters.project && task.project?._id !== filters.project) return false;
     if (filters.status && task.status !== filters.status) return false;
@@ -187,7 +187,7 @@ const TasksPage = () => {
     });
   };
 
-  // Task form handlers
+  
   const handleTaskInputChange = (e) => {
     const { name, value } = e.target;
     setTaskFormData((prev) => ({
@@ -195,7 +195,7 @@ const TasksPage = () => {
       [name]: value,
     }));
 
-    // Clear assigned members when project changes
+    
     if (name === "projectId") {
       setTaskFormData((prev) => ({
         ...prev,
@@ -211,7 +211,7 @@ const TasksPage = () => {
     );
 
     if (isSelected) {
-      // Remove member
+     
       setTaskFormData((prev) => ({
         ...prev,
         assignedMembers: prev.assignedMembers.filter(
@@ -222,7 +222,7 @@ const TasksPage = () => {
         prev.filter((w) => w.memberName !== member.name)
       );
     } else {
-      // Add member
+   
       setTaskFormData((prev) => ({
         ...prev,
         assignedMembers: [...prev.assignedMembers, member],
@@ -272,7 +272,7 @@ const TasksPage = () => {
       return;
     }
 
-    // Check for over-capacity assignments
+   
     const warnings = checkMemberCapacity(taskFormData.assignedMembers);
     const hasOverCapacity = warnings.some((w) => w.isOverCapacity);
 
@@ -283,7 +283,7 @@ const TasksPage = () => {
       return;
     }
 
-    // If no warnings, proceed with creation
+   
     createTaskMutation.mutate({
       ...taskFormData,
       createdBy: user.email,
@@ -291,7 +291,7 @@ const TasksPage = () => {
   };
 
   const handleCapacityWarningConfirm = () => {
-    // User chose "Assign Anyway"
+  
     setShowCapacityWarning(false);
     createTaskMutation.mutate({
       ...pendingTaskData,
@@ -300,13 +300,13 @@ const TasksPage = () => {
   };
 
   const handleCapacityWarningAutoAssign = () => {
-    // User chose "Auto-assign Instead"
+   
     setShowCapacityWarning(false);
     autoAssignMutation.mutate(pendingTaskData.projectId);
   };
 
   const handleCapacityWarningCancel = () => {
-    // User chose "Choose Different Members"
+    
     setShowCapacityWarning(false);
     setTaskFormData({
       ...pendingTaskData,
@@ -336,7 +336,7 @@ const TasksPage = () => {
       return;
     }
 
-    // Calculate current workload for each member
+   
     const memberWorkload = selectedProject.team.members.map((member) => {
       const taskCount = (projectTasks || []).filter((task) =>
         task.assignedMember.some((am) => am.name === member.name)
@@ -348,7 +348,7 @@ const TasksPage = () => {
       };
     });
 
-    // Filter members with available capacity and sort by most available
+    
     const availableMembers = memberWorkload
       .filter(({ availableCapacity }) => availableCapacity > 0)
       .sort((a, b) => b.availableCapacity - a.availableCapacity);
@@ -358,7 +358,7 @@ const TasksPage = () => {
       return;
     }
 
-    // Select the member with the most available capacity
+    
     const bestMember = availableMembers[0].member;
 
     setTaskFormData((prev) => ({
@@ -410,7 +410,7 @@ const TasksPage = () => {
     }
   };
 
-  // Get unique members from all tasks
+
   const uniqueMembers = [
     ...new Set(
       tasks
@@ -419,7 +419,7 @@ const TasksPage = () => {
     ),
   ];
 
-  // Get selected project for member list
+ 
   const selectedProject = projects.find(
     (p) => p._id === taskFormData.projectId
   );
