@@ -3,7 +3,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { MdDashboard } from 'react-icons/md'
+import { MdAssignmentAdd, MdDashboard } from 'react-icons/md'
 import { GoProjectRoadmap } from "react-icons/go";
 import { PiMicrosoftTeamsLogoFill } from "react-icons/pi";
 
@@ -13,7 +13,8 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: <MdDashboard></MdDashboard> },
   { name: 'Projects', href: '/projects', icon:  <GoProjectRoadmap></GoProjectRoadmap>},
   { name: 'Teams', href: '/teams', icon: <PiMicrosoftTeamsLogoFill></PiMicrosoftTeamsLogoFill> },
-  { name: 'Tasks', href: '/tasks', icon: <BiTask></BiTask> }
+  { name: 'Tasks', href: '/tasks', icon: <BiTask></BiTask> },
+  { name: 'Add Role', href: '/role', icon: <MdAssignmentAdd /> }
 ]
 
 export default function Sidebar({ isOpen, onClose }) {
